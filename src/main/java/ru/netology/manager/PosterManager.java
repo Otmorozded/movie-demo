@@ -6,10 +6,23 @@ public class PosterManager {
 
   private PosterData[] posters = new PosterData[0];
 
+  int defaultNumberToShow = 10;
 
-  public PosterManager() {
+  public PosterManager(int number) {
+
+    if(number >= 0){
+      defaultNumberToShow = number;
+
+    }
+
+
   }
 
+
+  public PosterManager() {
+
+
+  }
 
 
   public void addMovie(PosterData poster) {
@@ -27,26 +40,14 @@ public class PosterManager {
   }
 
 
-  public PosterData[] getAllMovies(int numberOfMoviesInManager) {
-
-    int defaultNumberToShow = 10;
-
-    if(numberOfMoviesInManager <= 0) {
-
-      numberOfMoviesInManager = defaultNumberToShow;
-    }
+  public PosterData[] getAllMovies() {
 
     if(defaultNumberToShow > posters.length) {
 
       defaultNumberToShow = posters.length;
     }
 
-    if (numberOfMoviesInManager <= defaultNumberToShow) {
 
-      defaultNumberToShow = numberOfMoviesInManager;
-    } else {
-      defaultNumberToShow = posters.length;
-    }
 
     PosterData[] result = new PosterData[defaultNumberToShow];
 

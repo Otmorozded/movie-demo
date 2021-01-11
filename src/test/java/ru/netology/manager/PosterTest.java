@@ -8,7 +8,7 @@ import ru.netology.manager.PosterManager;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class PosterTest {
-    PosterManager manager = new PosterManager();
+
 
     PosterData movieToAdd1 = new PosterData(1, "title1", "genre1");
     PosterData movieToAdd2 = new PosterData(2, "title2", "genre2");
@@ -20,10 +20,10 @@ public class PosterTest {
     PosterData movieToAdd8 = new PosterData(8, "title8", "genre8");
     PosterData movieToAdd9 = new PosterData(9, "title9", "genre9");
     PosterData movieToAdd10 = new PosterData(10, "title10", "genre10");
-    PosterData movieToAdd11 = new PosterData(11, "11", "genre11");
+    PosterData movieToAdd11 = new PosterData(11, "title11", "genre11");
 
-    @BeforeEach
-    void setup() {
+
+    void setup(PosterManager manager) {
         manager.addMovie(movieToAdd1);
         manager.addMovie(movieToAdd2);
         manager.addMovie(movieToAdd3);
@@ -35,43 +35,78 @@ public class PosterTest {
         manager.addMovie(movieToAdd9);
 
 
-
     }
 
 
     @Test
     public void shouldAddMoviesEqualManagerLength() {
+        PosterManager manager = new PosterManager();
+
         manager.addMovie(movieToAdd10);
-        PosterData[] actual = manager.getAllMovies(10);
-        PosterData[] expected = new PosterData[]{movieToAdd10, movieToAdd9, movieToAdd8, movieToAdd7,
-                movieToAdd6, movieToAdd5, movieToAdd4, movieToAdd3, movieToAdd2, movieToAdd1};
+        PosterData[] actual = manager.getAllMovies();
+        PosterData[] expected = new PosterData[]{movieToAdd10};
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void  shouldAddLastMovies() {
+    public void shouldMoviesShowFromLastToFirst() {
+        PosterManager manager = new PosterManager();
 
-        manager.addMovie(movieToAdd10);
-        PosterData[] actual = manager.getAllMovies(5);
-        PosterData[] expected = new PosterData[] {movieToAdd10, movieToAdd9, movieToAdd8, movieToAdd7,
-                movieToAdd6,};
-        assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldShowMoviesWithNegativeRequest() {
-
-
-        PosterData[] actual = manager.getAllMovies(-1);
-        PosterData[] expected = new PosterData[] { movieToAdd9, movieToAdd8, movieToAdd7,
+        setup(manager);
+        PosterData[] actual = manager.getAllMovies();
+        PosterData[] expected = new PosterData[]{movieToAdd9, movieToAdd8, movieToAdd7,
                 movieToAdd6, movieToAdd5, movieToAdd4, movieToAdd3, movieToAdd2, movieToAdd1};
         assertArrayEquals(expected, actual);
 
+    }
+
+    @Test
+    public void shouldShowMoviesWithLimit() {
+
+        PosterManager manager = new PosterManager(5);
+        setup(manager);
+        PosterData[] actual = manager.getAllMovies();
+        PosterData[] expected = new PosterData[]{movieToAdd9, movieToAdd8, movieToAdd7,
+                movieToAdd6, movieToAdd5};
+        assertArrayEquals(expected, actual);
+
 
     }
 
+    @Test
+    public void shouldDefaultValue() {
+
+        PosterManager manager = new PosterManager();
+        setup(manager);
+        manager.addMovie(movieToAdd10);
+        manager.addMovie(movieToAdd11);
+        PosterData[] actual = manager.getAllMovies();
+        PosterData[] expected = new PosterData[]{movieToAdd11, movieToAdd10, movieToAdd9,
+                movieToAdd8, movieToAdd7, movieToAdd6, movieToAdd5, movieToAdd4, movieToAdd3, movieToAdd2};
+
+        assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    public void shouldShowMoviesWithZeroNumber() {
+        PosterManager manager = new PosterManager(0);
+        setup(manager);
+        PosterData[] actual = manager.getAllMovies();
+        PosterData[] expected = new PosterData[]{};
+        assertArrayEquals(expected, actual);
 
 
+    }
 
+    @Test
+    public void shouldShowMoviesWithNegativeNumber() {
+        PosterManager manager = new PosterManager(-1);
+        setup(manager);
+        PosterData[] actual = manager.getAllMovies();
+        PosterData[] expected = new PosterData[]{movieToAdd9, movieToAdd8, movieToAdd7,
+                movieToAdd6, movieToAdd5, movieToAdd4, movieToAdd3, movieToAdd2, movieToAdd1};
+        assertArrayEquals(expected, actual);
 
+    }
 }
